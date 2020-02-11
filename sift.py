@@ -40,6 +40,8 @@ def alignImages(im1, im2):
   im1Gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
   im2Gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
    
+  im1Gray=im1Gray.transpose()
+  im2Gray=im2Gray.transpose()
   # Detect ORB features and compute descriptors.
   orb = cv2.ORB_create(MAX_FEATURES)
   keypoints1, descriptors1 = orb.detectAndCompute(im1Gray, None)
@@ -136,16 +138,16 @@ if __name__ == '__main__':
   #refFilename=img_src
   #refFilename = "../lab_c/lab_c_scan.png"
   print("Reading reference image : ", refFilename)
-  #imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
-  imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
+  imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
+  #imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
  
   # Read image to be aligned
   imFilename=img_src
   #imFilename=img_dst
   #imFilename = "../lab_c/lab_c_scan_lab_c_15.png"
   #print("Reading image to align : ", imFilename);  
-  #im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
-  im = np.flipud( cv2.imread( imFilename, cv2.IMREAD_COLOR) )
+  im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
+  #im = np.flipud( cv2.imread( imFilename, cv2.IMREAD_COLOR) )
    
   #print("Aligning images ...")
   ## Registered image will be resotred in imReg. 
