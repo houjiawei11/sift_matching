@@ -93,10 +93,10 @@ def alignImages(im1, im2):
       #f"{model.translation[1]:.4f}), "
       #f"Rotation: {model.rotation:.4f}")
   #print("RANSAC:")
-  #print(f"Scale: ({model_robust.scale[0]:.4f}, {model_robust.scale[1]:.4f}), "
-      #f"Translation: ({model_robust.translation[0]:.4f}, "
-      #f"{model_robust.translation[1]:.4f}), "
-      #f"Rotation: {model_robust.rotation:.4f}")
+  print(f"Scale: ({model_robust.scale[0]:.4f}, {model_robust.scale[1]:.4f}), "
+      f"Translation: ({model_robust.translation[0]:.4f}, "
+      f"{model_robust.translation[1]:.4f}), "
+      f"Rotation: {model_robust.rotation:.4f}")
   R=eulerAnglesToRotationMatrix(model_robust.rotation)
   #print("R=")
   #print(R)
@@ -133,6 +133,7 @@ if __name__ == '__main__':
   #out_file_name = _extract_target_file_name(img_dst, img_src)
   # Read reference image
   refFilename=img_dst
+  #refFilename=img_src
   #refFilename = "../lab_c/lab_c_scan.png"
   print("Reading reference image : ", refFilename)
   #imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
@@ -140,6 +141,7 @@ if __name__ == '__main__':
  
   # Read image to be aligned
   imFilename=img_src
+  #imFilename=img_dst
   #imFilename = "../lab_c/lab_c_scan_lab_c_15.png"
   #print("Reading image to align : ", imFilename);  
   #im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
