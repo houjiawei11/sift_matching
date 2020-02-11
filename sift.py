@@ -132,14 +132,14 @@ if __name__ == '__main__':
   out_file_name = _extract_target_file_name(img_src, img_dst)
   #out_file_name = _extract_target_file_name(img_dst, img_src)
   # Read reference image
-  refFilename=img_src
+  refFilename=img_dst
   #refFilename = "../lab_c/lab_c_scan.png"
   print("Reading reference image : ", refFilename)
   imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
   #imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
  
   # Read image to be aligned
-  imFilename=img_dst
+  imFilename=img_src
   #imFilename = "../lab_c/lab_c_scan_lab_c_15.png"
   #print("Reading image to align : ", imFilename);  
   im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
@@ -149,6 +149,7 @@ if __name__ == '__main__':
   ## Registered image will be resotred in imReg. 
   ## The estimated homography will be stored in h. 
   imReg, h = alignImages(im, imReference)
+  imReg, h = alignImages(imReference, im)
    
   # Write aligned image to disk. 
   outFilename = "aligned.jpg"
