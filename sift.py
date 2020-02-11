@@ -16,8 +16,8 @@ def eulerAnglesToRotationMatrix(theta) :
                 ])
   return R
 def getT(theta,translation) :
-  R = np.array([[math.cos(theta),    math.sin(theta),    translation[0]],
-                [-math.sin(theta),    math.cos(theta),     translation[1]],
+  R = np.array([[math.cos(theta),    math.sin(theta),    translation[1]],
+                [-math.sin(theta),    math.cos(theta),     translation[0]],
                 [0,                     0,                      1]
                 ])
   return R
@@ -78,7 +78,7 @@ def alignImages(im1, im2):
   model.estimate(src, dst)
 
   # robustly estimate affine transform model with RANSAC
-  model_robust, inliers = ransac((dst, src), AffineTransform, min_samples=3,
+  model_robust, inliers = ransac((src, dst), AffineTransform, min_samples=3,
                                 residual_threshold=2, max_trials=100)
   # Find homography
   h, mask = cv2.findHomography(points1, points2, cv2.RANSAC)
