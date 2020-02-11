@@ -76,7 +76,7 @@ def alignImages(im1, im2):
   model.estimate(src, dst)
 
   # robustly estimate affine transform model with RANSAC
-  model_robust, inliers = ransac((src, dst), AffineTransform, min_samples=3,
+  model_robust, inliers = ransac((dst, src), AffineTransform, min_samples=3,
                                 residual_threshold=2, max_trials=100)
   # Find homography
   h, mask = cv2.findHomography(points1, points2, cv2.RANSAC)
@@ -135,21 +135,21 @@ if __name__ == '__main__':
   refFilename=img_dst
   #refFilename = "../lab_c/lab_c_scan.png"
   print("Reading reference image : ", refFilename)
-  imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
-  #imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
+  #imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
+  imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
  
   # Read image to be aligned
   imFilename=img_src
   #imFilename = "../lab_c/lab_c_scan_lab_c_15.png"
   #print("Reading image to align : ", imFilename);  
-  im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
-  #im = np.flipud( cv2.imread( imFilename, cv2.IMREAD_COLOR) )
+  #im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
+  im = np.flipud( cv2.imread( imFilename, cv2.IMREAD_COLOR) )
    
   #print("Aligning images ...")
   ## Registered image will be resotred in imReg. 
   ## The estimated homography will be stored in h. 
   imReg, h = alignImages(im, imReference)
-  imReg, h = alignImages(imReference, im)
+  #imReg, h = alignImages(imReference, im)
    
   # Write aligned image to disk. 
   outFilename = "aligned.jpg"
