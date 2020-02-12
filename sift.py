@@ -39,6 +39,8 @@ def alignImages(im1, im2):
   # Convert images to grayscale
   im1Gray = cv2.cvtColor(im1, cv2.COLOR_BGR2GRAY)
   im2Gray = cv2.cvtColor(im2, cv2.COLOR_BGR2GRAY)
+  #im1Gray = im1
+  #im2Gray = im2
    
   im1Gray=im1Gray.transpose()
   im2Gray=im2Gray.transpose()
@@ -46,13 +48,21 @@ def alignImages(im1, im2):
   orb = cv2.ORB_create(MAX_FEATURES)
   keypoints1, descriptors1 = orb.detectAndCompute(im1Gray, None)
   keypoints2, descriptors2 = orb.detectAndCompute(im2Gray, None)
+  #sift = cv2.xfeatures2d.SIFT_create()
+  #sift = cv2.SIFT()
+  #keypoints1, descriptors1 = sift.detectAndCompute(im1Gray, None)
+  #keypoints2, descriptors2 = sift.detectAndCompute(im2Gray, None)
    
+  bf=cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+  matches=bf.match(descriptors1,descriptors2, None)
+  matches=sorted(matches,key= lambda x:x.distance)
+  #matching_result=cv2.drawMatches(img1,kp1,img2,kp2,matches[:20],None,flags=2)
   # Match features.
-  matcher = cv2.DescriptorMatcher_create(cv2.DESCRIPTOR_MATCHER_BRUTEFORCE_HAMMING)
-  matches = matcher.match(descriptors1, descriptors2, None)
+  #matcher = cv2.DescriptorMatcher_create(cv2.DESCRIPTOR_MATCHER_BRUTEFORCE_HAMMING)
+  #matches = matcher.match(descriptors1, descriptors2, None)
    
   # Sort matches by score
-  matches.sort(key=lambda x: x.distance, reverse=False)
+  #matches.sort(key=lambda x:x.distance, reverse=False)
  
   # Remove not so good matches
   numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)
@@ -95,10 +105,10 @@ def alignImages(im1, im2):
       #f"{model.translation[1]:.4f}), "
       #f"Rotation: {model.rotation:.4f}")
   #print("RANSAC:")
-  print(f"Scale: ({model_robust.scale[0]:.4f}, {model_robust.scale[1]:.4f}), "
-      f"Translation: ({model_robust.translation[0]:.4f}, "
-      f"{model_robust.translation[1]:.4f}), "
-      f"Rotation: {model_robust.rotation:.4f}")
+  #print(f"Scale: ({model_robust.scale[0]:.4f}, {model_robust.scale[1]:.4f}), "
+      #f"Translation: ({model_robust.translation[0]:.4f}, "
+      #f"{model_robust.translation[1]:.4f}), "
+      #f"Rotation: {model_robust.rotation:.4f}")
   R=eulerAnglesToRotationMatrix(model_robust.rotation)
   #print("R=")
   #print(R)
@@ -107,6 +117,12 @@ def alignImages(im1, im2):
   print(f"{T[0][0]:.4f}  {T[0][1]:.4f}  {T[0][2]:.4f} \n"
       f"{T[1][0]:.4f}  {T[1][1]:.4f}  {T[1][2]:.4f} \n"
       f"{T[2][0]:.4f}  {T[2][1]:.4f}  {T[2][2]:.4f} \n")
+  file = open("T.txt","w") 
+ 
+  file.write(f"{T[0][0]:.4f}  {T[0][1]:.4f}  {T[0][2]:.4f} \n"
+      f"{T[1][0]:.4f}  {T[1][1]:.4f}  {T[1][2]:.4f} \n"
+      f"{T[2][0]:.4f}  {T[2][1]:.4f}  {T[2][2]:.4f} \n") 
+  file.close() 
   return im1Reg, h
  
  
@@ -139,6 +155,7 @@ if __name__ == '__main__':
   #refFilename = "../lab_c/lab_c_scan.png"
   print("Reading reference image : ", refFilename)
   imReference = cv2.imread(refFilename, cv2.IMREAD_COLOR)
+  #imReference = cv2.imread(refFilename, 0)
   #imReference = np.flipud( cv2.imread( refFilename, cv2.IMREAD_COLOR) )
  
   # Read image to be aligned
@@ -147,6 +164,7 @@ if __name__ == '__main__':
   #imFilename = "../lab_c/lab_c_scan_lab_c_15.png"
   #print("Reading image to align : ", imFilename);  
   im = cv2.imread(imFilename, cv2.IMREAD_COLOR)
+  #im = cv2.imread(imFilename, 0)
   #im = np.flipud( cv2.imread( imFilename, cv2.IMREAD_COLOR) )
    
   #print("Aligning images ...")

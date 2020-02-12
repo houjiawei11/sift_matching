@@ -1,4 +1,4 @@
-for imgname in labc #intel labf laba labd f101 #
+for imgname in labc intel labf laba labd f101 #
 do 
     mkdir ${imgname} && cd ${imgname}
 
