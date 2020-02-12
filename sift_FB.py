@@ -59,7 +59,7 @@ def alignImages(im1, im2):
   flann = cv2.FlannBasedMatcher(index_params,search_params)
   matches = flann.knnMatch(descriptors1, descriptors2, k=2)
   matchesMask = [[0,0] for i in range(len(matches))]
-  coff = 0.2 
+  coff = 0.7
   good_matches=[]
   #for i,(m,n) in enumerate(matches):
     #if m.distance < coff * n.distance:
@@ -97,14 +97,13 @@ def alignImages(im1, im2):
   model.estimate(src, dst)
 
   # robustly estimate affine transform model with RANSAC
-  model_robust, inliers = ransac((src, dst), AffineTransform, min_samples=3,
-                                residual_threshold=2, max_trials=100)
+  model_robust, inliers = ransac((src, dst), AffineTransform, min_samples=3, residual_threshold=2, max_trials=100)
   # Find homography
   h, mask = cv2.findHomography(points1, points2, cv2.RANSAC)
 
   # Use homography
   height, width, channels = im2.shape
-  im1Reg = cv2.warpPerspective(im1, h, (width, height))
+  #im1Reg = cv2.warpPerspective(im1, h, (width, height))
  
   # Print estimated homography
   #print("Estimated homography : \n",  h)
