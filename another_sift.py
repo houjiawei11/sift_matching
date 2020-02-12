@@ -1,8 +1,8 @@
 #https://answers.opencv.org/question/199318/how-to-use-sift-in-python/
 import numpy as np
 import cv2
-img1=cv2.imread("anh1.jpg")
-img2=cv2.imread("anh2.jpg")
+img1=cv2.imread("/home/houjw/Seafile/Seafile/dataset_results/dataset_matching/bormann/freiburg_building101/freiburg_building101.jpg")
+img2=cv2.imread("/home/houjw/Seafile/Seafile/dataset_results/dataset_matching/bormann/freiburg_building101/freiburg_building101_Freiburg101_scan_-145_.jpg")
 gray1=cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY)
 gray2=cv2.cvtColor(img2,cv2.COLOR_BGR2GRAY)
 sift=cv2.xfeatures2d.SIFT_create()
