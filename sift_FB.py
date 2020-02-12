@@ -10,8 +10,8 @@ MAX_FEATURES = 500
 GOOD_MATCH_PERCENT = 0.15
 
 def eulerAnglesToRotationMatrix(theta) :
-  R = np.array([[math.cos(theta),    math.sin(theta),    0],
-                [-math.sin(theta),    math.cos(theta),     0],
+  R = np.array([[math.cos(theta),    -math.sin(theta),    0],
+                [math.sin(theta),    math.cos(theta),     0],
                 [0,                     0,                      1]
                 ])
   return R
@@ -69,35 +69,12 @@ def alignImages(im1, im2):
   for m,n in matches:
     if m.distance < coff*n.distance:
       good_matches.append(m)
-  #draw_params = dict(matchColor = (0,255,0), singlePointColor = (255,0,0),  matchesMask = matchesMask, flags = 0) 
-  #bf=cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
-  #matches=bf.match(descriptors1,descriptors2, None)
-  #matches=sorted(matches,key= lambda x:x.distance)
-  #matching_result=cv2.drawMatches(img1,kp1,img2,kp2,matches[:20],None,flags=2)
-  # Match features.
-  #matcher = cv2.DescriptorMatcher_create(cv2.DESCRIPTOR_MATCHER_BRUTEFORCE_HAMMING)
-  #matches = matcher.match(descriptors1, descriptors2, None)
-   
-  # Sort matches by score
-  matches.sort(key=lambda x:x[1].distance, reverse=False)
- 
-  # Remove not so good matches
-  numGoodMatches = int(len(matches) * GOOD_MATCH_PERCENT)
-  matches = matches[:numGoodMatches]
- 
-  # Draw top matches
-  #imMatches = cv2.drawMatches(im1, keypoints1, im2, keypoints2, matches, None)
-  #cv2.imwrite("matches.jpg", imMatches)
 
-  # Extract location of good matches
-  #points1 = np.zeros((len(matches), 2), dtype=np.float32)
-  #points2 = np.zeros((len(matches), 2), dtype=np.float32)
+ 
   points1 = np.zeros((len(good_matches), 2), dtype=np.float32)
   points2 = np.zeros((len(good_matches), 2), dtype=np.float32)
-  #imMatches1 = cv2.cvtColor(im1Gray,cv2.COLOR_GRAY2RGB)
-  #imMatches2 = cv2.cvtColor(im1Gray,cv2.COLOR_GRAY2RGB)
-  imMatches1 = im1Gray #np.zeros((im1Gray.shape[0], im1Gray.shape[1],3), np.uint8)
-  imMatches2 = im2Gray #np.zeros((im2Gray.shape[0], im2Gray.shape[1],3), np.uint8)
+#  imMatches1 = im1Gray #np.zeros((im1Gray.shape[0], im1Gray.shape[1],3), np.uint8)
+#  imMatches2 = im2Gray #np.zeros((im2Gray.shape[0], im2Gray.shape[1],3), np.uint8)
 
 
   #for i, (m,n) in enumerate(matches):
@@ -106,12 +83,12 @@ def alignImages(im1, im2):
   for i, match in enumerate(good_matches):
     points1[i, :] = keypoints1[match.queryIdx].pt
     points2[i, :] = keypoints2[match.trainIdx].pt
-  print('pt1 = ',(points1[3, 0],points1[3, 1]))
-  print('pt2 = ',(points2[3, 0],points2[3, 1]))
-  cv2.circle(imMatches1, (points1[3, 0],points1[3, 1]), 1, 55, 3) 
-  cv2.circle(imMatches2, (points2[3, 0],points2[3, 1]), 1, 55, 3)   
-  cv2.imwrite("matches1.jpg", imMatches1)
-  cv2.imwrite("matches2.jpg", imMatches2)
+  #print('pt1 = ',(points1[3, 0],points1[3, 1]))
+  #print('pt2 = ',(points2[3, 0],points2[3, 1]))
+  #cv2.circle(imMatches1, (points1[3, 0],points1[3, 1]), 1, 55, 3) 
+  #cv2.circle(imMatches2, (points2[3, 0],points2[3, 1]), 1, 55, 3)   
+  #cv2.imwrite("matches1.jpg", imMatches1)
+  #cv2.imwrite("matches2.jpg", imMatches2)
   src = np.array(points1)
   dst = np.array(points2)
   
@@ -127,7 +104,7 @@ def alignImages(im1, im2):
 
   # Use homography
   height, width, channels = im2.shape
-  #im1Reg = cv2.warpPerspective(im1, h, (width, height))
+  im1Reg = cv2.warpPerspective(im1, h, (width, height))
  
   # Print estimated homography
   #print("Estimated homography : \n",  h)
