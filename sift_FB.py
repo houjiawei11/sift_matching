@@ -103,7 +103,7 @@ def alignImages(im1, im2):
 
   # Use homography
   height, width, channels = im2.shape
-  #im1Reg = cv2.warpPerspective(im1, h, (width, height))
+  im1Reg = cv2.warpPerspective(im1, h, (width, height))
  
   # Print estimated homography
   #print("Estimated homography : \n",  h)
